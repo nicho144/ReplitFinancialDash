@@ -1,0 +1,140 @@
+Core Functional Components
+1. Implied Fed Funds Rate Module
+Fetch Fed Funds Futures (ZQ contracts) live data and calculate:
+Implied Fed Funds Rate = 100 - ZQ price (for nearest contracts)
+
+Update daily without deleting previous levels. Use time-series logging in database.
+
+Include Real Rate Calculation:
+Real Rate = Implied Fed Funds Rate - Inflation Expectations (from TIPS breakevens or 5y/5y forward rates)
+
+2. Treasury Curve Spread Monitoring
+Monitor and plot:
+
+2Y vs 5Y Spread
+
+2Y vs 10Y Spread
+
+Track spread behavior (widening/flattening) and label whether this is typically bullish for gold (narrowing).
+
+3. Market Open Signal Summary Panel
+Simple ✓ for Yes and ✗ for No checkboxes for:
+
+Whether GC Gold Futures, VIX, DXY, Bond Futures opened up or down just before premarket.
+
+Whether Fed Funds Futures values have changed.
+
+Color-coded summary tick panel (green/up, red/down).
+
+4. Market Breadth + Volatility Analysis Section
+Include:
+
+TICK / TRIN
+
+SKEW Index
+
+ATM Strangle Expected Range (based on IV)
+
+VIX vs Realized Volatility Premium
+
+Volatility Risk Premium (VRP)
+
+Interpretation of options being cheap or expensive.
+
+5. Futures Fair Value Section
+Compare ES Futures vs Fair Value.
+
+Show discount/premium labeling.
+
+Combine this with real yield readings to decide risk-on/risk-off status.
+
+6. Macro Interpretation & Skew
+Auto-interpret daily macroeconomic news headlines using keyword-trained AI NLP models.
+
+Incorporate:
+
+Skew movement (OTM call/put demand)
+
+Options mispricing detection: cheap/expensive designation.
+
+7. Flow Direction Table
+Table that uses:
+
+Real rates
+
+Yield curve positioning
+
+Market breadth
+
+Fed posture
+
+To suggest likely capital flow direction: Gold / Bonds / Equities
+
+8. FDA Calendar & News Section
+FDA Catalyst Calendar Box (pull data from FDA.gov or BioPharmCatalyst API)
+
+Live Market News Section:
+
+Push updates only
+
+Filter by high-impact, pre-defined market-moving keywords.
+
+Examples: "inflation surprise", "Fed pivot", "unexpected downgrade", "rate cut", "China stimulus"
+
+💻 Tech Stack Recommendation
+🔹 Frontend:
+React.js (with Tailwind CSS or Chakra UI) for sleek, real-time updating components
+
+Alternatively: Shiny Dash (Python) for financial/statistical teams or Streamlit for fast prototyping with Python
+
+Interactive charts via Plotly, Highcharts, or TradingView Widgets
+
+🔹 Backend / API Layer:
+FastAPI or Node.js as backend microservice
+
+Handle real-time data processing, user authentication, and push-notification dispatch
+
+🔹 Database:
+PostgreSQL or TimescaleDB for time-series data logging
+
+Ensure historical data is stored with zero data deletion fallback
+
+🔹 Data Integration (No Mock Data Allowed):
+True API Sources (no fallbacks):
+
+Fed Funds Futures: CME Group API or Quandl (ZQ contracts)
+
+TIPS-based Inflation Expectations: FRED API or Bloomberg (if available)
+
+Yield curves: U.S. Treasury.gov API or Refinitiv/Bloomberg
+
+VIX, SKEW, ATM options: CBOE APIs
+
+Breadth Indicators (TICK/TRIN): NYSE API or TradingView
+
+FDA Calendar: BioPharmCatalyst API
+
+Macro News: Use NewsAPI.org, filter via custom keyword model
+
+Fair Value: Real-time Index vs Futures via Interactive Brokers API or Polygon.io
+
+🔹 Push Notification / Alert System:
+Integrate Firebase Cloud Messaging or Pusher
+
+Enable real-time alert filtering based on high-impact news categories
+
+🔹 Optional: Proxy/Scraper Recommendations:
+If APIs are restricted:
+
+Use BrightData or SmartProxy for scraping secured financial data behind logins
+
+Headless browsing via Playwright or Selenium with rotating proxies (last resort)
+
+Cache results securely and refresh asynchronously to reduce load
+
+✅ Final Notes
+Ensure all calculations are computed on real data with live feeds. No fallback to default, random, or mock values.
+
+Dashboard must be modular—capable of future enhancements like sentiment analysis, ETF flows, and sector rotation.
+
+Security is critical—use OAuth 2.0 for user management, and encrypt all API keys and backend endpoints.
